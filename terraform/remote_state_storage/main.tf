@@ -1,19 +1,19 @@
 terraform {
   backend "s3" {
-    bucket         = "encoded-replica-terraform-state"
+    bucket         = "replica-terraform-state"
     key            = "global/terraform-backend/s3/terraform.tfstate"
-    region         = "us-west-1"
-    dynamodb_table = "encoded-replica-terraform-state-locks"
+    region         = "us-east-2"
+    dynamodb_table = "replica-terraform-state-locks"
     encrypt        = true
   }
 }
 
 provider "aws" {
-  region = "us-west-1"
+  region = "us-east-2"
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "encoded-replica-terraform-state"
+  bucket = "replica-terraform-state"
 
   lifecycle {
     prevent_destroy = true
@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "terraform_state" {
 }
 
 resource "aws_dynamodb_table" "terraform_locks" {
-  name         = "encoded-replica-terraform-state-locks"
+  name         = "replica-terraform-state-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
